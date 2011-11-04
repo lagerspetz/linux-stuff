@@ -1,0 +1,179 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          display-settings
+# Required-Start:    mountdevsubfs
+# Required-Stop:     
+# Should-Start:      udev
+# Default-Start:     2 3 4 5
+# Default-Stop:      
+# Short-Description: turn off discrete graphics or enable nvidia driver
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
+
+# vgaswitcheroo location.
+switcheroo=/sys/kernel/debug/vgaswitcheroo/switch
+# Which user has the switcheroo.txt file in their home.
+U="vermind"
+
+# The Intel xorg.conf location.
+xorg_intel=/etc/X11/xorg.conf.intel
+# The nVidia  xorg.conf location.
+xorg_nvidia=/etc/X11/xorg.conf.nvidia-switcheroo
+
+
+acall () {
+    ins=$( grep acpi_call /proc/modules )
+    if [ -z "$ins" ]; then
+        modprobe acpi_call
+    fi
+    if [ -e "/proc/acpi/call" ]; then
+        echo "\_SB.PCI0.P0P1.VGA._OFF" > /proc/acpi/call
+    fi
+}
+
+switch() {
+	if [ ! -e "${switcheroo}" ]; then
+		return
+	fi
+
+	isIntel=$( cat "${switcheroo}" | grep "IGD:+" )
+	# only switch if not on intel yet
+	if [ "$1" == "intel" -a -z "${isIntel}" ]; then
+		echo "IGD" > "${switcheroo}"
+	else
+		# either already intel, or nvidia wanted
+		# only switch if not on nvidia (i.e. on intel)
+		if [ "$1" == "nvidia" -a -n "${isIntel}" ]; then
+			echo "DIS" > "${switcheroo}"
+		fi
+	fi
+}
+
+change_if_exists() {
+    if [ -n "$1" -a -e /etc/alternatives/"$1" ]; then
+        current=$( readlink "/etc/alternatives/$1" );
+        if [ "$current" == "$2" ]; then
+            return 1 # Not changed
+        fi
+    	update-alternatives --set "$1" "$2"
+    	return 0
+    fi
+    return 1
+}
+
+enableintel () {
+    switch "intel"
+    #echo 0 > /sys/bus/pci/devices/0000:01:00.0/enable
+    #echo 1 > /sys/bus/pci/devices/0000:01:00.0/remove
+
+    #if [ -e /etc/alternatives/libGL.so.1 ]; then
+            #change_if_exists libGL.so.1 /usr/lib/nvidia/diversions/libGL.so.1
+            #change_if_exists ia32-libGL.so.1 /usr/lib32/nvidia/diversions/libGL.so.1
+    #else
+        #change_if_exists gl_conf /usr/lib/mesa/ld.so.conf
+    #fi
+
+    change_if_exists glx /usr/lib/mesa-diverted && ldconfig
+
+    diffs=$( diff "${xorg_intel}" /etc/X11/xorg.conf )
+    if [ -z "$diffs" ]; then
+        cp ${xorg_intel} /etc/X11/xorg.conf
+    fi
+    nvc=$( grep nvidia-current /proc/modules )
+    nvi=$( grep nvidia /proc/modules )
+    if [ -n "$nvc" ]; then
+        rmmod nvidia_current
+    else
+        if [ -n "$nvi" ]; then
+            rmmod nvidia
+        fi
+    fi
+    acall
+    # Full brightness
+    #setpci -s 00:02.0 F4.B=FF
+}
+
+enablenvidia () {
+    switch "nvidia"
+    #echo 0 > /sys/bus/pci/devices/0000:01:00.0/remove
+    #echo 1 > /sys/bus/pci/devices/0000:01:00.0/enable
+    if [ -e "/proc/acpi/call" ]; then
+        echo "\_SB.PCI0.P0P1.VGA._ON" > /proc/acpi/call
+    fi
+    #if [ -e /etc/alternatives/libGL.so.1 ]; then
+        #change_if_exists libGL.so.1 /usr/lib/nvidia/libGL.so.1
+        #change_if_exists ia32-libGL.so.1 /usr/lib32/nvidia/libGL.so.1
+    #else
+        #change_if_exists gl_conf /usr/lib/nvidia-current/ld.so.conf
+    #fi
+    change_if_exists glx /usr/lib/nvidia
+    ldconfig
+    #else
+	#if [ -e /usr/lib/xorg/modules/extensions/libglx.so.nvidia ]; then
+    #        ln -sf /usr/lib/xorg/modules/extensions/libglx.so.nvidia /usr/lib/xorg/modules/extensions/libglx.so
+	#fi
+    cp ${xorg_nvidia} /etc/X11/xorg.conf
+    if [ ! -e "/lib/modules/$( uname -r )/updates/dkms/nvidia.ko" -a ! -e "/lib/modules/$( uname -r )/kernel/drivers/video/nvidia.ko" ]; then
+        ln -s nvidia-current.ko "/lib/modules/$( uname -r )/updates/dkms/nvidia.ko"
+        depmod
+        modprobe nvidia
+        modprobe nvidia-current
+    fi
+}
+
+stuff () {
+    t=$( lspci | grep VGA | grep -i intel )
+    if [ -z "${t}" ]; then
+        t=$( lspci | grep Display | grep -i intel )
+    fi
+    if [ -n "$t" -a ! -f "/etc/modprobe.d/blacklist-intel.conf" ]; then
+        enableintel
+    else
+        enablenvidia
+    fi
+}
+
+autoenable () {
+    if [ ! -e "${switcheroo}" ]; then
+        stuff
+        return
+    fi
+    t=$( cat /home/${U}/switcheroo.txt )
+    if [ -z "$t" -o "$t" == "intel" ]; then
+        t=$( lspci | grep VGA | grep -i intel )
+        if [ -z "${t}" ]; then
+            t=$( lspci | grep Display | grep -i intel )
+        fi
+        if [ -n "$t" ]; then
+            enableintel
+        fi
+    else
+        enablenvidia
+    fi
+}
+
+case "$1" in
+  start|restart|reload|force-reload)
+      autoenable
+      ;;
+  stop)
+     echo "display-settings stopped."
+     ;;
+  force-nvidia)
+     enablenvidia
+     ;;
+  force-intel)
+     enableintel
+     ;;
+  autodetect)
+     autoenable
+     ;;
+   *)
+     echo "Usage: /etc/init.d/display-settings {start|stop|restart|reload|force-reload}"
+     exit 1
+     ;;
+esac
+
+exit 0
