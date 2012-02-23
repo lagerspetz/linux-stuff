@@ -1,0 +1,29 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          graphics-switch-daemon
+# Required-Start:    display-settings
+# Required-Stop:     
+# Should-Start:      udev
+# Default-Start:     2 3 4 5
+# Default-Stop:      
+# Short-Description: start graphics-switch.sh
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
+
+case "$1" in
+  start|restart|reload|force-reload)
+      start-stop-daemon --start -b --exec /etc/init.d/graphics-switch.sh --
+      ;;
+  stop)
+      echo "display-settings stopped."
+      ;;
+  *)
+      echo "Usage: /etc/init.d/graphics-switch-daemon {start|stop|restart|reload|force-reload}"
+      exit 1
+      ;;
+esac
+
+exit 0
+
