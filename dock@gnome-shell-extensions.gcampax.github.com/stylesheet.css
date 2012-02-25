@@ -18,7 +18,7 @@
     border: 1px solid #181818;
     background-gradient-direction: vertical;
     background-gradient-start: #3d3d3d;
-    background-gradient-end: #181818;
+    background-gradient-end: #555555;
 }
 
 .dock-app.selected {
@@ -30,7 +30,7 @@
     padding: 3px;
     border: 1px solid #5f5f5f;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(61,61,61,0.8);
+    background-gradient-start: rgba(150,150,150,0.8);
     background-gradient-end: rgba(24,24,24,0.2);
 }
 
@@ -38,7 +38,7 @@
     padding: 3px;
     border: 1px solid #666666;
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(61,61,61,0.8);
+    background-gradient-start: rgba(150,150,150,0.8);
     background-gradient-end: rgba(24,24,24,0.2);
     transition-duration: 100;
 }
