@@ -1,0 +1,7 @@
+[Clock setting allowed for all]
+Identity=unix-user:*
+Action=org.gnome.clockapplet.mechanism.*
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+

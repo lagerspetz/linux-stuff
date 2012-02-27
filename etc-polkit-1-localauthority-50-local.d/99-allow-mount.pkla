@@ -1,0 +1,7 @@
+[Mounting allowed for all]
+Identity=unix-user:*
+Action=org.freedesktop.udisks.*
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+

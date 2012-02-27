@@ -1,0 +1,7 @@
+[Network stuff allowed for all]
+Identity=unix-user:*
+Action=org.freedesktop.NetworkManager.*
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+

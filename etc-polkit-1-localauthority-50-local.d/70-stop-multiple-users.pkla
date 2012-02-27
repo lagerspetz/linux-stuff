@@ -1,0 +1,7 @@
+[Everybody can stop when "multiple users" logged in]
+Identity=unix-user:*
+Action=org.freedesktop.consolekit.system.*
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+
