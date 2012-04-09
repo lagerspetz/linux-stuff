@@ -11,7 +11,7 @@ PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
 # vgaswitcheroo location.
 switcheroo=/sys/kernel/debug/vgaswitcheroo/switch
 # Wait for termination of this before acting.
-SESSION="/usr/bin/gnome-shell"
+SESSION="/usr/bin/gnome-shell gnome-session"
 # How often to check for switcheroo.txt changes.
 INTERVAL=60
 
@@ -64,8 +64,15 @@ function notify_user {
 }
 
 function checkx {
-    xrunning=$( ps -ef | awk -v SESSION="$SESSION" '$0 !~ "LoginWindow" { if ( $8 == SESSION ) print $8}' )
-    #echo "xrunning=$xrunning"
+  xrunning=""
+  for k in $SESSION
+  do
+    if [ -z "$xrunning" ]
+    then
+      xrunning=$( ps -ef | awk -v SESSION="$k" '$0 !~ "LoginWindow" { if ( $8 == SESSION ) print $8}' )
+      #echo "xrunning=$xrunning"
+    fi
+  done
 }
 
 function stuff {
@@ -94,5 +101,8 @@ function stuff {
 }
 
 # Do stuff!
-stuff
+if [ "$1" != "DEBUG" ]
+then
+  stuff
+fi
 
