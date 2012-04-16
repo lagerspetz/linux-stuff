@@ -39,7 +39,7 @@
 
 @define-color link_color #08C;
 @define-color frame_color #80958a;
-@define-color inactive_frame_color #c7ccc1;
+@define-color inactive_frame_color #303030;
 @define-color warning_color #f57900;
 @define-color error_color #cc0000;
 @define-color success_color #4e9a06;
@@ -53,7 +53,7 @@
 @define-color error_fg_color rgb (166, 38, 38);
 @define-color error_bg_color rgb (237, 54, 54);
 
-@define-color insensitive_bg_color #f4f4f2;
+@define-color insensitive_bg_color #303030;
 @define-color insensitive_fg_color #a7aba7;
 
 @import url("gtk-widgets.css");
