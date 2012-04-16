@@ -286,8 +286,8 @@
 
 <draw_ops name="minimize_button_normal">
 	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
-		<color value="shade/gtk:bg[NORMAL]/0.70" />
-		<color value="shade/gtk:bg[NORMAL]/0.80" />
+		<color value="shade/gtk:fg[NORMAL]/0.70" />
+		<color value="shade/gtk:fg[NORMAL]/0.80" />
 	</gradient>
 	<line 
 		color="shade/gtk:bg[NORMAL]/1.20" 
@@ -298,8 +298,8 @@
 <draw_ops name="minimize_button_prelight">
 
 	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
-		<color value="shade/gtk:bg[NORMAL]/0.60" />
-		<color value="shade/gtk:bg[NORMAL]/0.70" />
+		<color value="shade/gtk:fg[NORMAL]/0.60" />
+		<color value="shade/gtk:fg[NORMAL]/0.70" />
 	</gradient>
 	<line 
 		color="shade/gtk:bg[NORMAL]/1.20" 
@@ -309,8 +309,8 @@
 
 <draw_ops name="minimize_button_pressed">
 	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
-		<color value="shade/gtk:bg[NORMAL]/0.90" />
-		<color value="shade/gtk:bg[NORMAL]/1.00" />
+		<color value="shade/gtk:fg[NORMAL]/0.90" />
+		<color value="shade/gtk:fg[NORMAL]/1.00" />
 	</gradient>
 	<line 
 		color="shade/gtk:bg[NORMAL]/1.20" 
@@ -320,8 +320,8 @@
 
 <draw_ops name="minimize_button_unfocused">
 	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
-		<color value="shade/gtk:bg[NORMAL]/0.85" />
-		<color value="shade/gtk:bg[NORMAL]/0.90" />
+		<color value="shade/gtk:fg[NORMAL]/0.45" />
+		<color value="shade/gtk:fg[NORMAL]/0.50" />
 	</gradient>
 	<line 
 		color="shade/gtk:bg[NORMAL]/1.10" 
