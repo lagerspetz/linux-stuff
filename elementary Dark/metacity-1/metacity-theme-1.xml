@@ -285,48 +285,48 @@
 <!-- minimize icon -->
 
 <draw_ops name="minimize_button_normal">
-	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
+	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 4" width="8" height="2">
 		<color value="shade/gtk:fg[NORMAL]/0.70" />
 		<color value="shade/gtk:fg[NORMAL]/0.80" />
 	</gradient>
 	<line 
-		color="shade/gtk:bg[NORMAL]/1.20" 
+		color="shade/gtk:fg[NORMAL]/0.80" 
 		x1="(width - 8) / 2" x2="(width - 8) / 2 + 7"  
-		y1="(height - 2) / 2 + 3" y2="(height - 2) / 2 + 3"/>
+		y1="(height - 2) / 2 + 4" y2="(height - 2) / 2 + 4"/>
 </draw_ops>
 
 <draw_ops name="minimize_button_prelight">
 
-	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
+	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 4" width="8" height="2">
 		<color value="shade/gtk:fg[NORMAL]/0.60" />
 		<color value="shade/gtk:fg[NORMAL]/0.70" />
 	</gradient>
 	<line 
-		color="shade/gtk:bg[NORMAL]/1.20" 
+		color="shade/gtk:fg[NORMAL]/0.80" 
 		x1="(width - 8) / 2" x2="(width - 8) / 2 + 7"  
-		y1="(height - 2) / 2 + 3" y2="(height - 2) / 2 + 3"/>
+		y1="(height - 2) / 2 + 4" y2="(height - 2) / 2 + 4"/>
 </draw_ops>
 
 <draw_ops name="minimize_button_pressed">
-	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
-		<color value="shade/gtk:fg[NORMAL]/0.90" />
-		<color value="shade/gtk:fg[NORMAL]/1.00" />
+	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 4" width="8" height="2">
+		<color value="shade/gtk:bg[SELECTED]/0.90" />
+		<color value="shade/gtk:bg[SELECTED]/1.00" />
 	</gradient>
 	<line 
-		color="shade/gtk:bg[NORMAL]/1.20" 
+		color="shade/gtk:bg[SELECTED]/0.80" 
 		x1="(width - 8) / 2" x2="(width - 8) / 2 + 7"  
-		y1="(height - 2) / 2 + 3" y2="(height - 2) / 2 + 3"/>
+		y1="(height - 2) / 2 + 4" y2="(height - 2) / 2 + 4"/>
 </draw_ops>
 
 <draw_ops name="minimize_button_unfocused">
-	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 1" width="8" height="2">
+	<gradient type="vertical" x="(width - 8) / 2" y="(height - 2) / 2 + 4" width="8" height="2">
 		<color value="shade/gtk:fg[NORMAL]/0.45" />
 		<color value="shade/gtk:fg[NORMAL]/0.50" />
 	</gradient>
 	<line 
-		color="shade/gtk:bg[NORMAL]/1.10" 
+		color="shade/gtk:fg[NORMAL]/0.70" 
 		x1="(width - 8) / 2" x2="(width - 8) / 2 + 7"  
-		y1="(height - 2) / 2 + 3" y2="(height - 2) / 2 + 3"/>
+		y1="(height - 2) / 2 + 4" y2="(height - 2) / 2 + 4"/>
 </draw_ops>
 
 <draw_ops name="blank">
