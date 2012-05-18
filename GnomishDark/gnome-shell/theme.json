@@ -1,0 +1,10 @@
+{ 
+   "shell-theme": {
+   "name": "GnomishDark",
+   "author": "Pedram Pourang (aka. Tsu Jan)",
+   "version": "1.0",
+   "type":   "custom",
+   "thumbnail": "GnomishDark-preview.png",
+   "url": "tsujan2000@gmail.com"
+    }
+}

@@ -1,0 +1,68 @@
+##########################################
+# NAUTILUS	
+##########################################
+gtk_color_scheme = "fg_color:#101010\nbg_color:#3b3b3e"
+
+style "nautilus-handle"
+{
+	GtkPaned::handle-size = 0
+	xthickness = 0
+	ythickness = 0
+	base[NORMAL] = @bg_color
+}
+
+style "nautilus-sidebar"  = "clearlooks-default"
+{
+
+	text[NORMAL] = @fg_color
+	base[NORMAL] = @bg_color
+	font_name = "Regular"
+
+	GtkTreeView::odd_row_color = @bg_color
+	GtkTreeView::even_row_color = @bg_color
+
+      # padding from the left edge
+	GtkTreeView::horizontal_separator = 15
+      	xthickness = 0
+	ythickness = 0
+}
+
+style "nautilus-extra-view" = "clearlooks-default"
+{
+
+	xthickness		= 0
+	ythickness		= 0
+
+	bg[NORMAL] = @bg_color
+}
+
+
+style "nautilus-view"
+{
+	#xthickness		= 0
+	#ythickness		= 0
+	#bg[NORMAL]	= @bg_color
+	#base[NORMAL]	= @bg_color
+
+}
+style "nautilus-statusbar"
+{
+	xthickness		= 4
+	ythickness		= 1
+}
+style "nautilus-window-base"
+{
+	#bg[NORMAL]	= @bg_color
+
+}
+
+# NAUTILUS
+widget_class	"*Nautilus*Window*"		style "nautilus-window-base"
+widget_class	"*Nautilus*Places*Sidebar*"	style "nautilus-sidebar"
+widget_class	"*Nautilus*View*"		style "nautilus-view"
+widget		"*Nautilus*Splitter"		style "nautilus-handle"
+widget_class	"*Nautilus*Statusbar*"		style "nautilus-statusbar"
+# For Elementay Nautilus
+widget_class	"*Nautilus*GtkToolbar*"		style "murrine-togglebutton"
+
+widget "*.nautilus-extra-view-widget" 		style : highest "nautilus-extra-view"

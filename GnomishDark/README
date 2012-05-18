@@ -1,0 +1,42 @@
+Like it's the case with other dark themes, there may be readability issues in LibreOffice and also in webpage input fields when seen with Firefox or Epiphany. Fortunately, there are workarounds:
+
+LibreOffice
+============
+The first issue can be fixed by changing "OOO > Tools > Options > LibreOffice > Appearance > Document background" to white after disabling automatic detection of high contrast in Accessibility.
+
+Firefox
+========
+To fix the second issue for Firefox, create '~/.mozilla/firefox/<YOUR_PROFILE>/chrome/userContent.css' with this in it:
+
+input, textarea, select {
+	-moz-appearance: none !important;
+	background-color: white;
+	color: black;
+}
+
+You might also have to create '~/.mozilla/firefox/<YOUR_PROFILE>/chrome/userChrome.css' as:
+
+menubar {
+	color: white !important; 
+}
+
+Epiphany
+=========
+At last, take control of Epiphany by selecting "Use custom stylesheet" in "Preferences > Font & Style" and creating '~/.gnome2/epiphany/user-stylesheet.css' as:
+
+select {
+	color: #fff !important;
+	border-radius: 0 !important;
+	border-color: transparent !important;
+}
+
+input {
+	background-color: #fcfcfc !important;
+	color: #000 !important;
+}
+
+Meld
+=====
+Meld is a nifty diff tool, written in Python and GTK+-2.0, that I use frequently. Its search entry -- at least, up to v1.5.4 -- hates dark backgrounds but it can be forced to like them by commenting out the two-line block of "on_find_entry__changed" in '/usr/lib/meld/meld/ui/findbar.py'.
+
+I also  change #880000" to #e60000" in '/usr/lib/meld/meld/tree.py' for more readability.
