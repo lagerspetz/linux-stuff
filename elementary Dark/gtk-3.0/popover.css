@@ -1,0 +1,124 @@
+GraniteWidgetsPopOver {
+
+    -GraniteWidgetsPopOver-arrow-width: 24;
+    -GraniteWidgetsPopOver-arrow-height: 12;
+    -GraniteWidgetsPopOver-border-radius: 7px;
+    -GraniteWidgetsPopOver-border-width: 1;
+    -GraniteWidgetsPopOver-shadow-size: 18;
+    
+    border-style: solid;
+    border-color: alpha (#000, 0.40);
+    margin: 0;
+}
+
+.popover_bg {
+    background-color: @transparent;
+    background-image: -gtk-gradient (linear,
+			         left top,
+			         left bottom,
+			         from (alpha (#f9f9f9, 0.97)),
+                     color-stop (0.80, alpha (#f9f9f9, 0.97)),
+			         to (alpha (#f0f0f0, 0.97)));
+}
+
+GraniteWidgetsPopOver .sidebar.view,
+GraniteWidgetsPopOver * {
+    background-color: @transparent;
+}
+
+GraniteWidgetsPopOver .button {
+
+    background-image: none;
+    
+    background-color: alpha (#fff, 0.0);    
+
+    -unico-outer-stroke-gradient: -gtk-gradient (linear,
+                     left top, left bottom,
+                     from (alpha (#fff, 0.00)),
+                     color-stop (0.80, alpha (#fff, 0.00)),
+                     to (alpha (#fff, 0.40)));
+
+    -unico-border-gradient: -gtk-gradient (linear,
+                     left top, left bottom,
+                     from (shade (@base_color, 0.80)),
+                     to (shade (@base_color, 0.74)));
+
+}
+
+GraniteWidgetsPopOver .button:active,
+GraniteWidgetsPopOver .button:hover:active {
+
+	background-image: none;
+
+    background-color: alpha (#000, 0.05);
+
+    -unico-border-gradient: -gtk-gradient (linear,
+                     left top, left bottom,
+                     from (shade (@base_color, 0.74)),
+                     to (shade (@base_color, 0.74)));
+
+    -unico-inner-stroke-gradient: -gtk-gradient (linear,
+                    left top, left bottom,
+                    from (alpha (#000, 0.07)),
+                    to (alpha (#000, 0.03)));
+}
+
+GraniteWidgetsPopOver .entry {
+
+    background-image: -gtk-gradient (linear,
+			         left top,
+			         left bottom,
+			         from (shade (@base_color, 0.88)),
+                     color-stop (0.20, shade (@base_color, 0.94)),
+			         to (shade (@base_color, 0.96)));
+
+    -unico-border-gradient: -gtk-gradient (linear,
+                     left top, left bottom,
+                     from (shade (@base_color, 0.74)),
+                     to (shade (@base_color, 0.76)));
+
+    -unico-inner-stroke-gradient: -gtk-gradient (linear,
+                    left top, left bottom,
+                    from (alpha (#000, 0.07)),
+                    to (alpha (#000, 0.03)));
+}
+
+.button.app {
+
+    border-width: 0;
+    border-radius: 5px;
+
+    -unico-inner-stroke-gradient: -gtk-gradient (linear,
+                     left top, left bottom,
+                     from (alpha (#fff, 0.00)),
+                     to (alpha (#fff, 0.00)));
+
+    -unico-outer-stroke-gradient: -gtk-gradient (linear,
+                     left top, left bottom,
+                     from (alpha (#000, 0.00)),
+                     to (alpha (#000, 0.00)));
+}
+
+.app:hover,
+.app:focus {
+
+    background-color: alpha (#000, 0.15);
+
+}
+
+/*.app:hover, .app:focus {
+
+    border-width: 3;
+
+    -unico-outer-stroke-gradient: -gtk-gradient (linear,
+                    left top, left bottom,
+                    from (shade (@selected_bg_color, 1.05)),
+                    to (shade (@selected_bg_color, 0.88)));
+
+    -unico-border-gradient: -gtk-gradient (linear,
+                    left top,
+                    left bottom,
+                    from (shade (@selected_bg_color, 1.30)),
+                    to (shade (@selected_bg_color, 0.98)));
+
+}*/

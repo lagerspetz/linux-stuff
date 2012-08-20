@@ -1,0 +1,48 @@
+BeatBoxAlbumListView,
+BeatBoxAlbumListView * {
+    background-color: #262626;
+	color: @selected_fg_color;
+}
+
+BeatBoxAlbumListView GtkTreeView {
+    background-color: #262626;
+	background-image: -gtk-gradient (linear,
+	                                 right bottom,
+	                                 left bottom,
+	                                 from (#262626),
+	                                 to (#262626));
+	color: @selected_fg_color;
+    -GtkTreeView-vertical-separator: 3;
+    -GtkTreeView-grid-line-width: 0;
+}
+
+BeatBoxAlbumListView GtkTreeView row:nth-child(even) {
+    background-image: none;
+	background-color: #313131;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #373737;
+}
+
+
+BeatBoxAlbumListView GtkTreeView row:nth-child(odd) {
+    background-image: none;
+	background-color: #262626;
+    border-width: 0px;
+    border-style: none;
+}
+
+BeatBoxAlbumListView .close-button,
+BeatBoxAlbumListView .close-button:hover,
+BeatBoxAlbumListView .close-button:active,
+BeatBoxAlbumListView .close-button:active:hover {
+	background-color: #000;
+	background-image: none;
+
+	border-width: 1px;
+	border-color: #3c3b37;
+
+	-unico-border-width: 0;
+	-unico-outer-stroke-width: 0;
+	-unico-inner-stroke-width: 0;
+}

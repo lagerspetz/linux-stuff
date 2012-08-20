@@ -1,0 +1,40 @@
+
+/* Interactive Trough */
+
+.check,
+.entry,
+.radio,
+GtkSpinButton.button {
+
+    color: #fff;
+
+    background-image: -gtk-gradient (linear,
+            left top,
+            left bottom,
+            from (shade (@bg_color, 0.82)),
+            color-stop (0.20, shade (@bg_color, 0.94)),
+            to (@bg_color)); 
+
+    -unico-border-gradient: -gtk-gradient (linear,
+            left top, left bottom,
+            from (shade (@bg_color, 0.65)),
+            to (shade (@bg_color, 0.72)));
+}
+
+/*****************
+ * GtkSpinButton *
+ *****************/
+
+GtkSpinButton.button,
+GtkSpinButton.button:insensitive,
+GtkSpinButton.button:prelight,
+GtkSpinButton.button:active {
+
+    background-image: none;
+    background-color: alpha (#fff, 0.0);
+
+    border-width:             0;
+    -unico-inner-stroke-width: 0;
+    -unico-outer-stroke-width: 0;
+
+}

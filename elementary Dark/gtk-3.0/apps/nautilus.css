@@ -33,9 +33,9 @@ NautilusSearchBar.info,
 NautilusQueryEditor.info {
     /* this background-color controls the symbolic icon in the entry */
     background-color: mix (@theme_fg_color, @base_color, 0.3);
-    border-radius: 0;
+    border-radius: 0px;
     border-style: solid;
-    border-width: 0 1 1 1;
+    border-width: 0px 1px 1px 1px;
 }
 
 NautilusSearchBar .entry {
@@ -53,17 +53,17 @@ NautilusSearchBar .entry {
 
 NautilusFloatingBar {
     background-color: @theme_bg_color;
-    border-radius: 3 3 0 0;
+    border-radius: 3px 3px 0px 0px;
     border-style: solid;
-    border-width: 1 1 1 1;
+    border-width: 1px 1px 1px 1px;
     border-color: darker (@theme_bg_color);
 
     -unico-border-gradient: none;
 }
 
 NautilusFloatingBar .button {
-    -GtkButton-image-spacing: 0;
-    -GtkButton-inner-border: 0;
+    -GtkButton-image-spacing: 0px;
+    -GtkButton-inner-border: 0px;
 }
 
 NautilusWindow .sidebar,

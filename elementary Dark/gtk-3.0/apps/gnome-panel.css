@@ -26,7 +26,7 @@ PanelApplet .button {
     background-color: @theme_bg_color;
     border-color: shade (@theme_bg_color, 0.8);
     border-radius: 0;
-    border-width: 0 1 0 1;
+    border-width: 0px 1px 0px 1px;
 
     text-shadow: none;
 
