@@ -416,6 +416,7 @@ PostlerMessages.view row:selected {
     -unico-inner-stroke-width: 1;
     -unico-outer-stroke-width: 1;
     border-style: solid;
+	border-color: #3b3f3f;
 }
 
 /* No outer stroke */
