@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Some common configuration files
+BUMBLEBEE_CONFDIR='/etc/bumblebee'
+
+# Full paths to possible optirun binaries
+OPTIRUNS=()
+OPTIRUNS[0]='/usr/local/bin/optirun'
+# provided for backwards compatibility, optirun32 is deprecated in favor of
+# optirun -32, optirun64 is equal to optirun
+OPTIRUNS[1]=$(which optirun32 2>/dev/null)
+OPTIRUNS[2]=$(which optirun64 2>/dev/null)
+
+# daemon pidfile
+BUMBLEBEE_PIDFILE=/var/run/bumblebee.pid
+# communication file for the daemon
+BUMBLEBEE_FIFO=/var/run/bumblebee.fifo
+
+
+# The Xorg server binary
+X_DAEMON=$(which X)
