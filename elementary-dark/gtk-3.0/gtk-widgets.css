@@ -22,7 +22,7 @@
 
     engine: unico;
 
-    padding: 1px;
+    padding: 1;
 
     -unico-text-shadow-color: alpha (@theme_base_color, 0.30);
     -unico-bullet-color: shade (@theme_bg_color, 0.535);
@@ -74,7 +74,7 @@ GtkWindow {
 }
 
 .tooltip {
-    padding: 4px 4px;
+    padding: 4 4;
     border-style: none;
     background-color: @theme_tooltip_bg_color;
     color: @theme_tooltip_fg_color;
@@ -94,8 +94,8 @@ GtkWindow {
 
     border-color: @theme_selected_bg_color;
     border-style: solid;
-    border-width: 1px;
-    border-radius: 2px;
+    border-width: 1;
+    border-radius: 2;
 }
 
 GtkTreeView .separator,
@@ -113,13 +113,13 @@ GtkTreeView .separator,
 }
 
 GtkStatusbar {
-    padding: 5px;
+    padding: 5;
     color: @theme_fg_color;
     -GtkStatusbar-shadow-type: none;
 }
 
 .dnd {
-    border-width: 1px;
+    border-width: 1;
     border-style: solid;
     border-color: @theme_selected_bg_color;
     border-radius: 0;
@@ -170,10 +170,10 @@ GtkTreeMenu.menu {
 }
 
 GtkTreeMenu .menuitem {
-    padding: 2px;
+    padding: 2;
     color: @theme_fg_color;
     border-style: solid;
-    border-width: 1px 0px;
+    border-width: 1 0;
     border-color: @menu_combobox_border;
 }
 
@@ -222,7 +222,7 @@ GtkTreeMenu .menuitem * {
     border-color: @theme_bg_color;
     border-width: 0;
     border-style: none;
-    padding: 4px;
+    padding: 4;
 
     -GtkWidget-window-dragging: true;
     -GtkMenuBar-internal-padding: 0;
@@ -231,7 +231,7 @@ GtkTreeMenu .menuitem * {
 .menubar .menuitem {
     border-width: 0;
     border-style: none;
-    padding: 3px 5px;
+    padding: 3 5;
 }
 
 /* remove the image from the prelight areas */
@@ -239,7 +239,7 @@ GtkTreeMenu .menuitem * {
     background-image: none;
     background-color: @menu_bg_color;
 
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 5 5 0 0;
 }
 
 .menubar .menuitem *:prelight {
@@ -416,7 +416,7 @@ PostlerMessages.view row:selected {
     -unico-inner-stroke-width: 1;
     -unico-outer-stroke-width: 1;
     border-style: solid;
-	border-color: #3b3f3f;
+    border-color: black;
 }
 
 /* No outer stroke */
