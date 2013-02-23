@@ -1,0 +1,341 @@
+#!/bin/bash
+# Copyright (C) 2011 Bumblebee Project
+#
+# This file is part of Bumblebee.
+#
+# Bumblebee is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Bumblebee is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Bumblebee.  If not, see <http://www.gnu.org/licenses/>.
+
+# Bumblebee functions library
+# Make sure that this file has NO side effects. It is intended to be sourced
+# and should define some functions and variables. Keep it clean, do not
+# unnecessarily leak variables (use locals)
+
+# Machine type, known values: i386, i686 (32-bit), x86_64 (64-bit).
+# This value depends on the kernel.
+ARCH=$(uname -m)
+
+# Is the OS 32-bit or 64-bit ? Save it to a variable since it's static.
+IS_64=false
+[[ $ARCH == x86_64 ]] && IS_64=true
+
+# This version is set at installation time.
+BUMBLEBEE_VERSION='2.4.1~git5d086c9'
+
+# The PCI Bus ID of the nvidia card, useful for lspci -s
+NVIDIA_BUSID=$(lspci -d 10de: -n | grep '030[02]:' | cut -d' ' -f1)
+
+# Retrieve the graphics driver to be passed to rmmod.
+# Return values:
+#  0: a valid driver is set, the driver is printed
+#  1: an invalid driver is set, an error is printed to stderr
+get_graphics_driver() {
+    local driver
+    # validate the driver setting
+    for driver in nouveau nvidia; do
+        if [[ $DRIVER == $driver ]] ; then
+            echo $driver
+            return 0
+        fi
+    done
+    echo "Invalid driver set, valid ones are nvidia and nouveau" >&2
+    return 1
+}
+
+# Retrieve the graphics kernel module name based on a driver name (arg 1).
+# Return values:
+#  0: a module is available, the module name is printed.
+#  1: no module is available, an error is printed to stderr.
+get_graphics_module() {
+    local driver="$1"
+    if [ -n "$driver" ]; then
+        if modinfo $driver &>/dev/null; then
+            echo $driver
+            return 0
+        fi
+        # Ugly hack for Ubuntu on which the module nvidia-current.ko loads the
+        # driver nvidia (as shown in /proc/modules).
+        if [[ $driver == nvidia ]] && modinfo nvidia-current &>/dev/null; then
+            echo nvidia-current
+            return 0
+        fi
+        echo "Driver '$driver' has no matching kernel module installed" >&2
+    fi
+    return 1
+}
+
+# Make sure that acpi_call is loaded when trying to use it.
+# Return values:
+#  0: acpi_call is correctly loaded.
+#  1: acpi_call can't be loaded.
+load_acpi_call() {
+    # Modprobe does nothing if a module is already loaded, so checking lsmod is
+    # redundant. It may return values other than 0 and 1 so explicitly return 0
+    # or 1.
+    modprobe -v acpi_call || return 1
+    return 0
+}
+
+# Send a call to acpi_call and get the result.
+# Return values:
+#  0: call was successful.
+#  1: call returns an error.
+acpi_call() {
+    # Try to load the driver and return if it fails.
+    load_acpi_call || return 1
+    echo "$1" > /proc/acpi/call
+    local result=$(cat /proc/acpi/call)
+    case "$result" in
+      Error*)
+        return 1
+        ;;
+      *)
+        return 0
+        ;;
+    esac
+}
+
+# Check whether a card is enabled or not.
+# Return values:
+#  0: card is enabled.
+#  1: card is disabled.
+card_status() {
+    lspci -s "$NVIDIA_BUSID" -v | grep -q ! && return 1
+    return 0
+}
+
+# Read the cardon file and send the content line by line to acpi_call in order
+# to enable the card.
+# Return values:
+#  0: card was correctly enabled.
+#  1: card can't be enabled.
+enable_card() {
+    local call
+    if ! card_status; then
+        while read -r call; do
+            acpi_call "$call"
+        done < "$BUMBLEBEE_CONFDIR/cardon"
+        if ! card_status; then
+            return 1
+        fi
+    fi
+    return 0
+}
+
+# Read the cardoff file and send the content line by line to acpi_call in order
+# to disable the card.
+# Return values:
+#  0: card was correctly disabled.
+#  1: card can't be disabled.
+disable_card() {
+    local call
+    if card_status; then
+        while read -r call; do
+            acpi_call "$call"
+        done < "$BUMBLEBEE_CONFDIR/cardoff"
+        if card_status; then
+            return 1
+        fi
+    fi
+    return 0
+}
+
+# Check if the nvidia card is in use by a driver and if so, print this name
+# The driver and kernel module are different for Ubuntu:
+# Driver: nvidia, but Module: nvidia-current.
+# Return values:
+#  0: a driver is loaded and printed
+#  1: no driver is loaded
+get_loaded_driver() {
+    # display the driver for the nvidia card if any. Explicitly set the return
+    # value as it may be values higher than 1
+    lspci -s "$NVIDIA_BUSID" -vmk | grep '^Driver:' | cut -d$'\t' -f2 &&
+        return 0 || return 1
+}
+
+# Load the requested driver.
+# Return values:
+#  0: driver was correctly loaded.
+#  1: driver can't be loaded.
+load_graphics_driver() {
+    local driver module loaded_driver loaded_module
+    # If there is an invalid driver setting, bail out.
+    driver="$(get_graphics_driver)" || return 1
+    # If there is no kernel module available, bail out.
+    module="$(get_graphics_module "$driver")" || return 1
+
+    # Get loaded video driver for the device (if any)
+    loaded_driver=$(get_loaded_driver)
+
+    # Unload a conflicting driver if any, do not return immediately on failure.
+    if [ -n "$loaded_driver" ] && [[ "$loaded_driver" != "$driver" ]]; then
+        unload_graphics_driver
+    fi
+
+    # Load the video driver.
+    modprobe -v "$module" || return 1
+    return 0
+}
+
+# Unload the currently loaded driver. If the driver was not loaded,
+# no action is performed.
+# Return values:
+#  0: no driver is loaded anymore
+#  1: driver can't be unloaded.
+unload_graphics_driver() {
+    local driver module
+    # Get the loaded driver and return if there is none.
+    driver=$(get_loaded_driver) || return 0
+    # If the module is empty, do not quit immediately, it may be an exotic
+    # driver we've never heard of which uses a different driver and module name
+    # just like nvidia and nvidia-current.
+    module="$(get_graphics_module "$driver")"
+
+    # Modprobe can only handle cases where driver == module.
+    if [[ "$module" == "$driver" ]]; then
+        modprobe -r -v "$module" || return 1
+    else
+        rmmod -v "$driver" || return 1
+    fi
+    return 0
+}
+
+# Check if the X server is available based on a pidfile, daemon and args.
+# If available, the PID of Bumblebee's X server is printed and the return value
+# is 0. Other values indicates that the Bumblebee X server is not available.
+# Return values:
+#  0: the X server is available.
+#  1: the X server has not been started.
+#  2: the pidfile exists, but is not valid and should be removed.
+#  3: the X server was previously crashed by nvidia, reboot required.
+#  4: a X server has been detected, but it's not Bumblebee's one.
+#  5: the X server has started but cannot accept connections (yet).
+xserver_available() {
+    local pidfile x_daemon x_daemon_args pid cmd
+    pidfile="$1"
+    x_daemon="$2"
+    x_daemon_args="$3"
+    if [ ! -L "$pidfile" -a ! -e "$pidfile" ]; then
+        # The pidfile does not exist.
+        return 1
+    fi
+    if [ -L "$pidfile" -o ! -f "$pidfile" ] ||
+        ! [ "$(stat -c '%u' "$pidfile")" = "0" ]; then
+        # The pidfile is a symlink, not a regular file or not owned by root.
+        return 2
+    fi
+    # Read the first line from the pidfile, ignoring whitespace.
+    read pid < "$pidfile"
+    if [ -z "$pid" ] ||
+        ! [ "$pid" -gt 0 -o "$pid" -le 0 ] 2>/dev/null; then
+        # Empty pidfile or non-numeric pid (non-numeric values never fulfil
+        # n > 0 && n <= 0).
+        return 2
+    fi
+    if ! ps --pid "$pid" &>/dev/null; then
+        # Process does not exist.
+        return 2
+    fi
+
+    cmd="$(ps --format command --no-headers -ww --pid $pid)"
+
+    if [[ $cmd == '[Xorg]' ]]; then
+        # Crashed X server and / or graphics driver.
+        return 3
+    fi
+
+    # Dirty: it justs checks the leading part, the display part is ignored.
+    if [[ $cmd == "$x_daemon $x_daemon_args"* ]]; then
+        echo "$pid"
+        # Gets the display number from the process path. Observations: :1-wtf,
+        # :wtf are allowed display names too. Let's just assume that everyone
+        # uses sane display numbers (:1). Additional note: the display number
+        # in the conffile may change during startup and shutdown.
+        local display=":${cmd##* :}"
+        display="${display%% *}"
+
+        if ! xdpyinfo -display "$display" &>/dev/null; then
+            # The X server is not ready or you're not allowed to connect to it.
+            return 5
+        fi
+
+        return 0
+    fi
+
+    # It's another X instance.
+    if [[ $cmd == "$x_daemon"* ]]; then
+        # Not a bumblebee X server.
+        return 4
+    fi
+
+    # Not a X server at all.
+    return 2
+}
+
+# Sets the graphics driver for the script and load related settings.
+set_graphics_driver() {
+    DRIVER="$1"
+
+    # The library path in which the X server can find libraries like GL.
+    X_LD_LIBRARY_PATH=
+    X_LD_LIB32_PATH=
+    X_LD_LIB64_PATH=
+
+    # Allow to set X_LD_LIBRARY_PATH if needed.
+    if [ -s "${BUMBLEBEE_LIBDIR}/drivers/${DRIVER}.options" ]; then
+        . "${BUMBLEBEE_LIBDIR}/drivers/${DRIVER}.options"
+        if $IS_64; then
+            [ -n "$X_LD_LIB64_PATH" ] && X_LD_LIBRARY_PATH="$X_LD_LIB64_PATH"
+        else
+            [ -n "$X_LD_LIB32_PATH" ] && X_LD_LIBRARY_PATH="$X_LD_LIB32_PATH"
+        fi
+    fi
+}
+
+# Load the settings and sets some other variables.
+# In the future, $BUMBLEBEE_CONFDIR/{bumblebee,optirun}.conf would be the
+# default file and users should overwrite with a custom optirun.conf in
+# ~/.bumblebee.
+load_settings() {
+    # defaults
+    STOP_SERVICE_ON_EXIT=N
+    VGL_DISPLAY=:8
+    VGL_COMPRESS=proxy
+    ECO_MODE=N
+    FALLBACK_START=N
+    DRIVER=nvidia
+    X_CONFFILE=
+    BUMBLEBEE_GROUP=bumblebee
+    BUMBLEBEE_LOGFILE=/var/log/bumblebee.log
+    . "$BUMBLEBEE_CONFDIR/bumblebee.conf"
+
+    # Allow the user to specify a custom xorg path, otherwise base on driver
+    [ -z "$X_CONFFILE" ] && X_CONFFILE="$BUMBLEBEE_CONFDIR/xorg.conf.${DRIVER}"
+
+    # -config file   use a certain xorg.conf so the nvidia drivers can be used
+    # -sharevts      without this option, the current VTY running X becomes
+    #                blank while the Bumblebee X server is running
+    # -nolisten tcp  do not use start a TCP server listening for connections
+    # -noreset       do not logout after the last program closes
+    X_DAEMON_ARGS="-config $X_CONFFILE -modulepath /usr/lib/nvidia,/usr/lib/xorg/modules -sharevts -nolisten tcp -noreset"
+
+    set_graphics_driver "$DRIVER"
+
+    # Remove colon and everything before it: :1.0 -> 1.0
+    DISPLAY_NUMBER=${VGL_DISPLAY##*:}
+    # Remove dot and everything after it: 1.0 -> 1
+    DISPLAY_NUMBER=${DISPLAY_NUMBER%%.*}
+    PIDFILE="/tmp/.X${DISPLAY_NUMBER}-lock"
+    X_LOGFILE="/var/log/Xorg.${DISPLAY_NUMBER}.log"
+
+}

@@ -23,13 +23,13 @@
 
 <frame_geometry name="shaded" parent="normal" rounded_top_left="true" rounded_top_right="true" rounded_bottom_left="false" rounded_bottom_right="false"/>
 
-<frame_geometry name="normal_maximized" parent="normal" rounded_top_left="false" rounded_top_right="false" rounded_bottom_left="false" rounded_bottom_right="false">
+<frame_geometry name="normal_maximized" has_title="false" parent="normal" rounded_top_left="false" rounded_top_right="false" rounded_bottom_left="false" rounded_bottom_right="false">
 	<!-- strip frame spacing off the normal geometry when maximised -->
 	<distance name="left_width" value="0"/>
 	<distance name="right_width" value="0"/>
 	<distance name="bottom_height" value="1"/>
-	<distance name="left_titlebar_edge" value="1"/>
-	<distance name="right_titlebar_edge" value="1"/>
+	<distance name="left_titlebar_edge" value="0"/>
+	<distance name="right_titlebar_edge" value="0"/>
 </frame_geometry>
 
 <frame_geometry name="utility" title_scale="small" rounded_top_left="true" rounded_top_right="true" rounded_bottom_left="false" rounded_bottom_right="false">
@@ -112,8 +112,8 @@
 </draw_ops>
 
 <draw_ops name="titlebar_maximized">
-	<include name="titlebar_gradient"/>
-	<include name="maxed_border"/>
+<!--	<include name="titlebar_gradient"/>
+	<include name="maxed_border"/>-->
 </draw_ops>
 
 <draw_ops name="round_titlebar">
@@ -377,17 +377,17 @@
 </frame_style>
 
 <frame_style name="normal_maximized" geometry="normal_maximized" parent="normal">
-	<piece position="entire_background" draw_ops="titlebar_maximized"/>
+<!--	<piece position="entire_background" draw_ops="titlebar_maximized"/>
 	<button function="maximize" state="normal" draw_ops="unmaximize_button_unfocused"/>
 	<button function="maximize" state="pressed" draw_ops="unmaximize_button_pressed"/>
-	<button function="maximize" state="prelight" draw_ops="unmaximize_button_prelight"/>
+	<button function="maximize" state="prelight" draw_ops="unmaximize_button_prelight"/>-->
 </frame_style>
 
 <frame_style name="focused_maximized" geometry="normal_maximized" parent="focused">
-	<piece position="entire_background" draw_ops="titlebar_maximized"/>
+<!--	<piece position="entire_background" draw_ops="titlebar_maximized"/>
 	<button function="maximize" state="normal" draw_ops="unmaximize_button_normal"/>
 	<button function="maximize" state="pressed" draw_ops="unmaximize_button_pressed"/>
-	<button function="maximize" state="prelight" draw_ops="unmaximize_button_prelight"/>
+	<button function="maximize" state="prelight" draw_ops="unmaximize_button_prelight"/>-->
 </frame_style>
 
 <frame_style name="border" geometry="border" parent="normal">

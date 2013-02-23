@@ -1,0 +1,4 @@
+#!/bin/bash
+X_LD_LIB32_PATH=/usr/lib/i386-linux-gnu/nvidia/current
+X_LD_LIB64_PATH=/usr/lib/i386-linux-gnu/nvidia/current:/usr/lib/x86_64-linux-gnu/nvidia:$X_LD_LIB32_PATH
+

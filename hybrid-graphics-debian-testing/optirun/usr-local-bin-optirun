@@ -1,0 +1,294 @@
+#!/bin/bash
+# Copyright (C) 2011 Bumblebee Project
+#
+# This file is part of Bumblebee.
+#
+# Bumblebee is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Bumblebee is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Bumblebee.  If not, see <http://www.gnu.org/licenses/>.
+
+#If nVidia is being used, do not use bumblebee
+nv=$( cat /opt/switcheroo.txt )
+if [ "$nv" == "nvidia" ]
+then
+  "$@"
+  exit 0
+fi
+
+# load common library
+BUMBLEBEE_LIBDIR='/usr/local/lib/bumblebee'
+. "$BUMBLEBEE_LIBDIR/common-paths"
+. "$BUMBLEBEE_LIBDIR/common-functions"
+
+load_settings
+
+show_help_msg() {
+    cat <<EOF
+Usage: ${0##*/} [options] [--] application
+Start an application which may use the nVidia graphics card
+
+  -f
+    Force the use of the nVidia graphics card, even when off-line (running on a
+    battery)
+
+  -c TYPE
+    Sets the compress type for the transport from the nVidia graphics card to
+    the display. Valid values are proxy, jpeg, rgb, xv and yuv. This option can
+    be set in the configuration file too. If not set in the configuration file
+    using the VGL_COMPRESS option, it defaults to proxy
+
+  -d DISPLAY
+    Set the display on which the Bumblebee X server is available. If not set in
+    the configuration file using the 'VGL_DISPLAY' option, it defaults to ':8'.
+    Do not confuse this with the DISPLAY environment variable which specifies
+    the display on which an application should be drawn
+
+  --failsafe=Y
+  --failsafe=N
+    If failsafe is enabled, optirun will still start the program if the nVidia
+    card is unavailable. Configuration item:
+
+  --silent
+    Do not print messages from optirun. Note: fatal errors (invalid command
+    options) are still printed
+
+  --debug-log=LOG
+  --debug-log LOG
+    Sets the environment options VGL_LOG=LOG and VGL_VERBOSE=1 to log messages
+    from VirtualGL to file LOG. If LOG is empty, messages will be printed to
+    standard output
+
+  --help
+    Prints this help message
+EOF
+}
+
+# only print a message if the user wants to
+PRINT_MESSAGE=echo
+msg() {
+    $PRINT_MESSAGE "$1"
+}
+
+# only set VGL_LOG to empty if the variable was not defined, this allows the
+# user to set VGL_LOG= to get default behavior: write to stderr
+: "${VGL_LOG:=/dev/null}"
+
+while :; do
+    case "$1" in
+      -f)
+        ECO_MODE=N
+        msg "The application will be run with Bumblebee even if it's not"
+        msg "connected to a power supply (e.g. running on battery)"
+        ;; #force optirun if on battery
+      -32)
+        msg "Ignoring -32 as optirun automatically detects which libraries should be used"
+        ;;
+      -c)
+        shift
+        case "$1" in
+          jpeg|proxy|rgb|yuv|xv)
+            VGL_COMPRESS=$1
+            echo "Bumblebee will transfer frames using: $VGL_COMPRESS"
+            ;;
+          *)
+            echo "The frame transfer parameter -c must be followed by jpeg, proxy, rgb, yuv or xv."
+            exit 3
+            ;;
+        esac
+        ;;
+      -d)
+        shift
+        if ! [[ $1 =~ "^:[0-9]+$" ]]; then
+            VGL_DISPLAY=$1
+            echo "Bumblebee will use the $VGL_DISPLAY display for rendering"
+        else
+            echo "The display parameter -d must be followed by a colon and digits like :8"
+            exit 2
+        fi
+        ;;
+      --failsafe|failsafe=*)
+        [[ $1 == --failsafe ]] && shift
+        if [[ $1 == [YyNn]* ]]; then
+            FALLBACK_START="$1"
+        else
+            echo "Invalid value for --failsafe. Valid values are Y and N."
+            exit 255
+        fi
+        ;;
+      --help)
+        show_help_msg
+        exit 0
+        ;;
+      --silent)
+        # if $PRINT_MESSAGE is set to : (no-op), no messages will be displayed
+        PRINT_MESSAGE=:
+        ;;
+      --debug-log=*|--debug-log)
+        VGL_VERBOSE=1
+        # note that empty values are allowed too, it will print errors to stderr
+        if [[ $1 == --debug-log ]]; then
+            shift 1
+            VGL_LOG="$1"
+        else
+            VGL_LOG="${1#--debug-log=}"
+        fi
+        ;;
+      --)
+        # commonly found in parameters, usage: optirun -- -not -recognised -as -param
+        shift
+        break
+        ;;
+      -*)
+        echo "optirun: unrecognized option '$1'"
+        echo "Try '${0##*/}' --help for more information."
+        exit 255
+        ;;
+      *)
+        # begin of a command, assuming no optirun parameters after this one
+        break
+        ;;
+    esac
+    # move to the next option in the command
+    shift
+done
+
+if [[ $0 =~ /optirun(32|64)$ ]]; then
+    msg "Running ${0##*/} is deprecated as optirun detects automatically"
+    msg "whether the 32-bit or 64-bit libraries should be used. Use optirun instead"
+fi
+
+if [ $# -eq 0 ]; then
+    echo "optirun: no application passed"
+    echo "Try '${0##*/}' --help for more information."
+    exit 255
+fi
+
+msg_shown=false
+show_msg() {
+    if ! $msg_shown; then
+        msg "Another bumblebee powered application is running, keeping bumblebee alive."
+        msg_shown=true
+    fi
+}
+
+# Ensures that the X server can be used. Return values:
+# 0 - the X server is available
+# 1 - the X server is unavailable
+# 2 - the X server is unavailable, user error
+optirun_ready() {
+    # Is the current user allowed to use Bumblebee?
+    # check if the user is a member of the group in this session
+    if ! id -Gn | tr ' ' '\n' | grep -Fxq "$BUMBLEBEE_GROUP"; then
+        # check if the user is a member according to the groups database
+        if getent group "$BUMBLEBEE_GROUP" | cut -d: -f4 | tr ',' '\n' |
+            grep -Fxq "$(id -u -n)"; then
+            msg "You're already member of the '$BUMBLEBEE_GROUP' group, but"
+            msg "need to re-login to apply these changes.."
+        else
+            msg "You've no permission to start the Bumblebee X server. Add"
+            msg "yourself to the '$BUMBLEBEE_GROUP' group by running:"
+            msg "    sudo usermod -a -G $BUMBLEBEE_GROUP $(id -u -n)"
+        fi
+        return 2
+    fi
+
+    xserver_available "$PIDFILE" "$X_DAEMON" "$X_DAEMON_ARGS" > /dev/null
+    case $? in
+      0) # X is started and available
+        return 0
+        ;;
+      5) # started but not ready
+        ;;
+      [12]) # Not started yet
+        # XXX: a better way to check if the daemon is running
+        if [ ! -e "$BUMBLEBEE_FIFO" ]; then
+            msg "The Bumblebee daemon has not been started. To start the daemon, run:"
+            # XXX: distro-dependant command
+            msg "    sudo /etc/init.d/bumblebee start"
+            return 1
+        fi
+        if [ ! -w "$BUMBLEBEE_FIFO" ]; then
+            msg "You have no permission to start the Bumblebee X server. Add"
+            msg "yourself to the '$BUMBLEBEE_GROUP' group."
+            return 1
+        fi
+        echo start > "$BUMBLEBEE_FIFO"
+        ;;
+      3) # xserver / driver crash
+        return 1
+        ;;
+      4) # not our X
+        return 1
+        ;;
+    esac
+    # Wait for at most $X_SERVER_TIMEOUT + .5 seconds before X is available
+    # since the daemon needs to be able to process the request too
+    local retries=$(($X_SERVER_TIMEOUT * 2 + 1))
+    for ((; retries; retries--)); do
+        xserver_available "$PIDFILE" "$X_DAEMON" "$X_DAEMON_ARGS" \
+            > /dev/null && return 0
+        sleep .5
+    done
+
+    # at this point, the timeout for the server to become available has reached
+    return 1
+}
+# Launch an application on the nVidia card
+# return values do not make sense since it could come from the app as well
+optirun_launcher() {
+    optirun_ready
+    local optirun_retval=$?
+    if [ $optirun_retval -ne 0 ]; then
+        if [ $optirun_retval = 1 ]; then
+            msg "The Bumblebee X server was not available, please check the"
+            msg "Bumblebee logfile at $BUMBLEBEE_LOGFILE"
+        fi
+        msg "=================================================="
+        # If we cannot use the Bumblebee X server, run the program without it
+        [[ $FALLBACK_START == [Yy]* ]] && exec "$@"
+        return
+    fi
+
+    # VGL transports needs the vglclient to be started once for the current X
+    # server. Since there can only be one vglclient per display (enforced by
+    # vglclient), we can run it multiple times with vglclient taking care of it
+    [[ $VGL_COMPRESS =~ ^jpeg|rgb|yuv$ ]] && vglclient -detach &>/dev/null
+
+    local VGL_DRIVER="$X_LD_LIBRARY_PATH:$LD_LIBRARY_PATH"
+    # export settings from configuration file
+    export VGL_LOG
+    export VGL_VERBOSE
+    echo vglrun -gamma 1.7 -c "$VGL_COMPRESS" -d "$VGL_DISPLAY" -ld "$VGL_DRIVER" -- "$@"
+    vglrun -gamma 1.7 -c "$VGL_COMPRESS" -d "$VGL_DISPLAY" -ld "$VGL_DRIVER" -- "$@"
+
+    # notify the daemon that we are done
+    echo stop > "$BUMBLEBEE_FIFO"
+}
+
+RUN=optirun_launcher
+
+# Only check if we're off-line when ecomode is enabled as querying the value
+# may introduce a second of delay
+if [[ $ECO_MODE == [Yy]* ]]; then
+    POWER_STATE=0
+    for state in /sys/class/power_supply/*/online; do
+        POWER_STATE=$(cat "$state")
+        break
+    done
+
+    # do not render the program on the nVidia card as we're off-line, exec will
+    # replace the current process by the program specified in the arguments
+    [ $POWER_STATE -eq 0 ] && RUN=exec
+fi
+
+$RUN "$@"
+

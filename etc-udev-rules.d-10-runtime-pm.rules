@@ -1,0 +1,9 @@
+SUBSYSTEM!="pci", GOTO="power_runtime_rules_end"
+ACTION!="add", GOTO="power_runtime_rules_end"
+
+KERNEL=="????:??:??.?"
+PROGRAM="/bin/sleep 0.1"
+
+ATTR{power/control}=="*", ATTR{power/control}="auto"
+
+LABEL="power_runtime_rules_end"

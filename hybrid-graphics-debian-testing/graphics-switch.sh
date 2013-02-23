@@ -15,12 +15,20 @@ SESSION="/usr/bin/gnome-shell gnome-session"
 # How often to check for switcheroo.txt changes.
 INTERVAL=60
 
+dm=$( cat  /etc/X11/default-display-manager )
+dm=$( basename "$dm" )
+
 function switch {
     if [ -f /etc/init.d/gdm3 ]; then
         /etc/init.d/gdm3 stop
     else
         /etc/init.d/gdm stop
     fi
+    if [ -f /etc/init.d/"$dm" ]
+    then
+      /etc/init.d/"$dm" stop
+    fi
+
     sleep 1
     /etc/init.d/display-settings autodetect
     sleep 1
@@ -28,6 +36,11 @@ function switch {
         /etc/init.d/gdm3 start
     else
         /etc/init.d/gdm start
+    fi
+
+    if [ -f /etc/init.d/"$dm" ]
+    then
+      /etc/init.d/"$dm" start
     fi
 }
 
@@ -81,7 +94,7 @@ function stuff {
     # Actions
     while true; do
         read_switcheroo
-        #echo "target=$target changed=$changed old=$old"
+        echo "target=$target changed=$changed old=$old"
         if [ -z "${changed}" ]; then
             sleep ${INTERVAL}
             continue;
@@ -103,6 +116,11 @@ function stuff {
 # Do stuff!
 if [ "$1" != "DEBUG" ]
 then
-  stuff
+  if [ "$1" == "firsttime" ]
+  then
+    stuff firsttime
+  else
+    stuff
+  fi
 fi
 
