@@ -9,7 +9,7 @@ PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
 # from init.d.
 
 # vgaswitcheroo location.
-switcheroo=/sys/kernel/debug/vgaswitcheroo/switch
+switcheroo=/proc/acpi/bbswitch
 # Wait for termination of this before acting.
 SESSION="/usr/bin/gnome-shell gnome-session"
 # How often to check for switcheroo.txt changes.
@@ -55,19 +55,25 @@ function read_switcheroo {
         unset changed
     fi
     # Now, if the target is different than what the switch file says
- 	isIntel=$( cat "${switcheroo}" | grep "IGD:+" )
-	# only switch if not on intel yet
-	if [ "${target}" == "intel" -a -z "${isIntel}" ]; then
-        changed=true
+    if [ -f "${switcheroo}" ]
+    then
+      isIntel=$( cat "${switcheroo}" | grep "OFF" )
+    else
+      unset changed
+      return
+    fi
+    # only switch if not on intel yet
+    if [ "${target}" == "intel" -a -z "${isIntel}" ]; then
+      changed=true
+    else
+	# either already intel, or nvidia wanted
+	# only switch if not on nvidia (i.e. on intel)
+	if [ "${target}" == "nvidia" -a -n "${isIntel}" ]; then
+          changed=true
 	else
-		# either already intel, or nvidia wanted
-		# only switch if not on nvidia (i.e. on intel)
-		if [ "${target}" == "nvidia" -a -n "${isIntel}" ]; then
-            changed=true
-		else
-            unset changed
+           unset changed
         fi
-	fi
+    fi
 }
 
 function notify_user {
@@ -99,6 +105,7 @@ function stuff {
             sleep ${INTERVAL}
             continue;
         fi
+        echo "changed=$changed isIntel=${isIntel} old=$old target=$target"
         # changed
         notify_user
         checkx

@@ -14,7 +14,7 @@ PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
 
 case "$1" in
   start|restart|reload|force-reload)
-      start-stop-daemon --start -b --exec /etc/init.d/graphics-switch.sh --
+      start-stop-daemon --start -b --exec /opt/graphics-switch.sh -- firsttime
       ;;
   stop)
       echo "display-settings stopped."

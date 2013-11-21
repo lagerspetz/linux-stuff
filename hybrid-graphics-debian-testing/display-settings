@@ -13,7 +13,7 @@
 PATH=/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
 
 # vgaswitcheroo location.
-switcheroo=/sys/kernel/debug/vgaswitcheroo/switch
+switcheroo=/proc/acpi/bbswitch
 
 # The Intel xorg.conf location.
 xorg_intel=/etc/X11/xorg.conf.intel
@@ -22,12 +22,12 @@ xorg_nvidia=/etc/X11/xorg.conf.nvidia-switcheroo
 
 
 acall () {
-    ins=$( grep acpi_call /proc/modules )
+    ins=$( grep bbswitch /proc/modules )
     if [ -z "$ins" ]; then
-        modprobe acpi_call
+        modprobe bbswitch
     fi
-    if [ -e "/proc/acpi/call" ]; then
-        echo "\_SB.PCI0.P0P1.VGA._OFF" > /proc/acpi/call
+    if [ -e "$switcheroo" ]; then
+      echo "OFF" > "$switcheroo"
     fi
 }
 
@@ -36,17 +36,32 @@ switch() {
 		return
 	fi
 
-	isIntel=$( cat "${switcheroo}" | grep "IGD:+" )
+	isIntel=$( cat "${switcheroo}" | grep "OFF" )
 	# only switch if not on intel yet
 	if [ "$1" == "intel" -a -z "${isIntel}" ]; then
-		echo "IGD" > "${switcheroo}"
+		echo "OFF" > "${switcheroo}"
 	else
 		# either already intel, or nvidia wanted
 		# only switch if not on nvidia (i.e. on intel)
 		if [ "$1" == "nvidia" -a -n "${isIntel}" ]; then
-			echo "DIS" > "${switcheroo}"
+			echo "ON" > "${switcheroo}"
 		fi
 	fi
+
+  if [ -f  /sys/kernel/debug/vgaswitcheroo/switch ]; then
+  isIntel=$( cat /sys/kernel/debug/vgaswitcheroo/switch | grep + | grep IGD )
+# only switch if not on intel yet
+	if [ "$1" == "intel" -a -z "${isIntel}" ]; then
+    echo "IGD" > /sys/kernel/debug/vgaswitcheroo/switch
+	else
+		# either already intel, or nvidia wanted
+		# only switch if not on nvidia (i.e. on intel)
+		if [ "$1" == "nvidia" -a -n "${isIntel}" ]; then
+      echo "DIS" > /sys/kernel/debug/vgaswitcheroo/switch
+		fi
+	fi
+
+ fi
 }
 
 change_if_exists() {
@@ -94,9 +109,6 @@ enableintel () {
 }
 
 enablenvidia () {
-    if [ -e "/proc/acpi/call" ]; then
-        echo "\_SB.PCI0.P0P1.VGA._ON" > /proc/acpi/call
-    fi
     switch "nvidia"
     #echo 0 > /sys/bus/pci/devices/0000:01:00.0/remove
     #echo 1 > /sys/bus/pci/devices/0000:01:00.0/enable
