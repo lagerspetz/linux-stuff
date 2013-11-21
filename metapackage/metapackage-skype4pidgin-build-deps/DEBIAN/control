@@ -1,0 +1,12 @@
+Package: lagerspetz-meta-skype4pidgin-build-deps
+Version: 1.0.0
+Section: libs
+Priority: optional
+Architecture: all
+Depends: libstartup-notification0-dev, libpurple-dev
+Suggests:
+Conflicts:
+Installed-Size: 124 kb
+Maintainer: Eemil Lagerspetz <eemil@gmx.com>
+Description: This is a metapackage.
+        It installs the dependencies for building pidgin.
