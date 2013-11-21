@@ -1,0 +1,12 @@
+Package: lagerspetz-meta-freepv-build-dep
+Version: 1.0.0
+Section: libs
+Priority: optional
+Architecture: all
+Depends: freeglut3-dev, xulrunner-dev, libxml2-dev, libxxf86vm-dev
+Suggests:
+Conflicts:
+Installed-Size: 124 kb
+Maintainer: Eemil Lagerspetz <eemil@gmx.com>
+Description: This is a metapackage.
+        It installs the dependencies for building freepv.

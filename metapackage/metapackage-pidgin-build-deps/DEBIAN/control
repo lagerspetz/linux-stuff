@@ -1,0 +1,12 @@
+Package: lagerspetz-meta-pidgin-build-dep
+Version: 1.0.0
+Section: libs
+Priority: optional
+Architecture: all
+Depends: cdbs, doxygen, gir1.2-gst-plugins-base-0.10, libatk1.0-dev, libavahi-glib-dev, libdbus-glib-1-dev, libenchant-dev, libgadu-dev, libgdk-pixbuf2.0-dev, libgstfarsight0.10-dev, libgstreamer-plugins-base0.10-dev, libgstreamer0.10-dev, libgtk2.0-dev, libgtkspell-dev, libmeanwhile-dev, libncursesw5-dev, libperl-dev, libsasl2-dev, libstartup-notification0-dev, libxcomposite-dev, libxdamage-dev, libxinerama-dev, libxrandr-dev, libxss-dev, libzephyr-dev, tcl-dev, tcl8.5-dev, tk-dev, tk8.5-dev, x11proto-composite-dev, x11proto-damage-dev, x11proto-randr-dev, x11proto-scrnsaver-dev, x11proto-xinerama-dev
+Suggests:
+Conflicts:
+Installed-Size: 124 kb
+Maintainer: Eemil Lagerspetz <eemil@gmx.com>
+Description: This is a metapackage.
+        It installs the dependencies for building pidgin.
