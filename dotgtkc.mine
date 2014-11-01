@@ -1,0 +1,15 @@
+#--------------------------------------------------------
+style "default"
+{
+    GtkWidget::link-color = "#9999ff"
+    GtkWidget::visited-link-color = "#ff99ff"
+    GtkHTML::alink_color = "#9999ff"
+    GtkHTML::link_color = "#9999ff"
+    GtkHTML::vlink_color = "#ff99ff"
+    GnomeHref::link_color = "#9999ff"
+    GtkIMHtml::hyperlink-color = "#9999ff"
+    GtkIMHtml::hyperlink-prelight-color = "#ff99ff"
+}
+
+class "GtkWidget" style "default"
+#---------------------------------------------------------
