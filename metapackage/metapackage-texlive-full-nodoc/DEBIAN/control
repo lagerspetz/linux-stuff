@@ -1,0 +1,14 @@
+Package: texlive-full-nodoc
+Version: 1.0.0
+Section: tex
+Priority: optional
+Architecture: all
+Multi-Arch: foreign
+Depends: t1utils, cm-super (>= 0.3.3-3), texlive-pstricks (>= 2016), tex-gyre, texlive-lang-chinese (>= 2016), texlive-lang-greek (>= 2016), texlive-latex-recommended (>= 2016), texlive-fonts-extra (>= 2016), texlive-humanities (>= 2016), texlive-binaries (>= 2016.20160513.41080-5), texlive-lang-cyrillic (>= 2016), texlive-formats-extra (>= 2016), lacheck, chktex, texlive-latex-base (>= 2016), texlive-lang-spanish (>= 2016), prerex, texlive-lang-czechslovak (>= 2016), texlive-bibtex-extra (>= 2016), texlive-htmlxml (>= 2016), texlive-math-extra (>= 2016), info (>= 4.8), texinfo (>= 4.8), dvipng, dvidvi, texlive-lang-african (>= 2016), prosper (>= 1.00.4+cvs.2006.10.22), texlive-extra-utils (>= 2016), context, feynmf, texlive-lang-korean (>= 2016), tipa (>= 2:1.2-2.1), texlive-font-utils (>= 2016), texlive-base (>= 2016), texlive-omega (>= 2016), texlive-lang-italian (>= 2016), texlive-lang-european (>= 2016), texlive-lang-indic (>= 2016), texlive-lang-french (>= 2016), fragmaster, texlive-generic-extra (>= 2016), latexmk, texlive-science (>= 2016), texlive-lang-portuguese (>= 2016), texlive-lang-english (>= 2016), texlive-metapost (>= 2016), latex-cjk-all (>= 4.6.0+cvs20060714-2), texlive-lang-other (>= 2016), purifyeps, texlive-latex-extra (>= 2016), texlive-plain-extra (>= 2016), texlive-pictures (>= 2016), texlive-generic-recommended (>= 2016), texlive-xetex (>= 2016), texlive-lang-german (>= 2016), texlive-lang-cjk (>= 2016), latexdiff, texlive-publishers (>= 2016), texlive-lang-polish (>= 2016), texlive-music (>= 2016), psutils, texlive-games (>= 2016), lmodern (>= 0.93.3), texlive-fonts-recommended (>= 2016), texlive-luatex (>= 2016), texlive-lang-arabic (>= 2016), lcdf-typetools, texlive-lang-japanese (>= 2016)
+Suggests:
+Conflicts:
+Installed-Size: 124 kb
+Maintainer: Eemil Lagerspetz <eemil@gmx.com>
+Description: Texlive-full without -doc deps.
+        This metapackage depends on the the packages that
+        texlive-full depends on, but without the -doc dependencies.
