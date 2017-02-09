@@ -1,0 +1,2 @@
+deb [arch=amd64,i386] http://repo.steampowered.com/steam/ precise steam
+deb-src [arch=amd64,i386] http://repo.steampowered.com/steam/ precise steam
