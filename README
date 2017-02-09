@@ -1,3 +1,6 @@
 This repo contains useful linux scripts.
 No guarantee that they work or warranty of
 any kind is given.
+
+scripts/saferm.sh: alias this to "rm". Moves files to your desktop environment's trash folder instead of permanently deleting files when you type "rm".
+
