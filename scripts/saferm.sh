@@ -147,8 +147,10 @@ complain() {
     	msg="Is not a regular file or directory (and -f not specified):"
 	elif [ -f "$1" ]; then # is a file
     act="true" # operate on files by default
+	elif [ -d "$1" -a -n "$recursive" ]; then # is a directory and recursive is enabled
+    act="true"
 	elif [ -d "$1" -a -z "${recursive}" ]; then
-			msg="Is a directory (and -r not specified):"
+		msg="Is a directory (and -r not specified):"
 	else
 		# not file or dir. This branch should not be reached.
 		msg="No such file or directory:"
