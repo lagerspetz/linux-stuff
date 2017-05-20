@@ -190,7 +190,7 @@ deletefiles() {
 		  ret=$?
 		  # Reset temporary unsafe flag
 		  if [ "$answer" == "y" ]; then unset unsafe; unset answer; fi
-      echo "MV exit status: $ret"
+      #echo "MV exit status: $ret"
       if [ ! "$ret" -eq 0 ]
       then 
         asknobackup "${k}"
