@@ -25,14 +25,17 @@ chmod +x Chobby.exe
 
 # Create .desktop file for launching Zero-K from the menu
 echo "[Desktop Entry]
-Version=1.0
-Name=Zero-K
-Exec=mono ${installdir}/Chobby.exe
-Path=${installdir}
-Icon=Zero-K
-Terminal=false
 Type=Application
-Categories=Application;Game;ArcadeGame;
+Version=1.0-5
+Name=Zero-K
+Keywords=game;strategy;
+Icon=Zero-K
+Path=${installdir}
+Exec=mono ${installdir}/Chobby.exe
+Terminal=false
+StartupNotify=false
+Categories=Game;StrategyGame;
+Comment=Free real time strategy (RTS) game
 " > "${installdir}/Zero-K.desktop"
 chmod +x "${installdir}/Zero-K.desktop"
 
