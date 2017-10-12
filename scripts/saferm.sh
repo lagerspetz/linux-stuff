@@ -124,7 +124,7 @@ performdelete() {
 }
 
 askfs() {
-  detect "$PWD/$1"
+  detect "$1"
   if [ "${fs}" != "${tfs}" ]; then
     unset answer;
     until [ "$answer" == "y" -o "$answer" == "n" ]; do
