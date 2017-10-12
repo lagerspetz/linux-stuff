@@ -16,6 +16,5 @@ then
 fi
 
 # Delete itself
-zenity --info --title "Done\!" --text "Zero-K has now been uninstalled. To remove unused dependencies, you can run $pkx $pkmanager autoremove."
-rm "${0}"
-
+zenity --info --title "Done\!" --text "Zero-K has now been uninstalled. To remove unused dependencies, you can run $pkx apt-get autoremove."
+rm -r "${installdir}"
