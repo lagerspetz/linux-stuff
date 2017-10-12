@@ -9,7 +9,7 @@
 ## Last update Sat Aug 16 23:49:18 2008 Eemil Lagerspetz
 ##
 
-version="1.15";
+version="1.16";
 
 ## flags (change these to change default behaviour)
 recursive="" # do not recurse into directories by default
@@ -49,12 +49,12 @@ else
 fi
 
 usagemessage() {
-	echo -e "This is ${blue}saferm.sh$norm $version. Better Gnome3 detection. Will ask to unsafe-delete instead of cross-fs
-    move. Allows unsafe (regular rm) delete (ignores trashinfo).
-Detects gnome better. Creates trash and trashinfo directories if they do not exist.
-Handles symbolic link deletion. Does not complain about different user any more.\n";
+	echo -e "This is ${blue}saferm.sh$norm $version. LXDE and Gnome3 detection.
+    Will ask to unsafe-delete instead of cross-fs move. Allows unsafe (regular rm) delete (ignores trashinfo).
+    Creates trash and trashinfo directories if they do not exist. Handles symbolic link deletion.
+    Does not complain about different user any more.\n";
 	echo -e "Usage: ${blue}/path/to/saferm.sh$norm [${blue}OPTIONS$norm] [$blue--$norm] ${blue}files and dirs to safely remove$norm"
-	echo -e "$blueOPTIONS$norm:"
+	echo -e "${blue}OPTIONS$norm:"
 	echo -e "$blue-r$norm      allows recursively removing directories."
 	echo -e "$blue-f$norm      Allow deleting special files (devices, ...)."
   echo -e "$blue-u$norm      Unsafe mode, bypass trash and delete files permanently."
