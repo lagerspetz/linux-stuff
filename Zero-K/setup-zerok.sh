@@ -17,11 +17,14 @@ then
   ${pkx} ${pkgmanager} -y install mono-complete libsdl2-2.0-0 libopenal1 libcurl3 zenity libgdiplus
 fi
 
+# Binary name
+bin="Zero-K.exe"
+
 # Setup ZK...
 cd ${installdir}
 installdir=$PWD
-wget -N https://zero-k.info/lobby/Chobby.exe 2>&1 | tee /dev/stderr | sed -u "s/^ *[0-9]*K[ .]*\([0-9]*%\).*/\1/" | zenity --progress --text "Downloading Zero-K Lobby..." --title "Downloading Zero-K" --auto-close --auto-kill --no-cancel
-chmod +x Chobby.exe
+wget -N https://zero-k.info/lobby/${bin} 2>&1 | tee /dev/stderr | sed -u "s/^ *[0-9]*K[ .]*\([0-9]*%\).*/\1/" | zenity --progress --text "Downloading Zero-K Lobby..." --title "Downloading Zero-K" --auto-close --auto-kill --no-cancel
+chmod +x ${bin}
 
 # Create .desktop file for launching Zero-K from the menu
 echo "[Desktop Entry]
@@ -31,7 +34,7 @@ Name=Zero-K
 Keywords=game;strategy;
 Icon=Zero-K
 Path=${installdir}
-Exec=mono ${installdir}/Chobby.exe
+Exec=mono ${installdir}/${bin}
 Terminal=false
 StartupNotify=false
 Categories=Game;StrategyGame;
