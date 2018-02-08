@@ -1,10 +1,11 @@
 Package: lagerspetz-meta-games
 Maintainer: Eemil Lagerspetz <eemil@gmx.com>
 Architecture: all
-Version: 1.0.0
+Version: 1.0.1
 Multi-Arch: foreign
-Depends: dosbox, fluid-soundfont-gm, joystick, lutris, playonlinux, pavucontrol, paprefs, steam-launcher, timidity, xboxdrv, zero-k
+Depends: dosbox, fluid-soundfont-gm, joystick, lutris, playonlinux, pavucontrol, paprefs, steam-launcher, timidity, xboxdrv
 Recommends: bumblebee-nvidia, nouveau-firmware, nvidia-settings, primus
 Suggests:
 Description: metapackage pulling in steam, lutris, etc gaming platforms.
  This package is meant to shorten the list of manually installed packages on Ubuntu/Mint systems, and to help replicate a configuration on a new machine.
+ Zero-K removed because it comes from Steam nowadays.
