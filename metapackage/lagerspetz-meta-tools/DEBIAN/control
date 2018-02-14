@@ -3,9 +3,10 @@ Maintainer: Eemil Lagerspetz <eemil@gmx.com>
 Architecture: all
 Version: 1.0.1
 Multi-Arch: foreign
-Depends: atom, darktable, dbeaver-ce, dos2unix, gedit-plugin-text-size, gimp, gitg, gnuplot-x11, google-talkplugin, hamster-applet, heimdall-flash, html2text, hugin, inkscape, intel-gpu-tools, jabref, jdupes, libpng-tools, libreoffice-voikko, maven, meld, mosh, nautilus-megasync, nginx, openoffice.org-hyphenation, openshot, openssh-server, openssh-sftp-server, pdfmod, pdftk, postgresql, powertop, python3-bcrypt, python3-psycopg2, python3-tornado, qalculate-gtk, qgis, rambox, scrot, shotwell, skypeforlinux, solaar, texlive-full, texstudio, thrift-compiler, vim-gnome, voikko-fi, xournal, zsh
+Depends: atom, darktable, dbeaver-ce, dos2unix, gedit-plugin-text-size, gimp, gitg, gnuplot-x11, google-talkplugin, hamster-applet, heimdall-flash, html2text, hugin, inkscape, intel-gpu-tools, jabref, jdupes, libpng-tools, libreoffice-voikko, maven, meld, mosh, nautilus-megasync, nginx, openoffice.org-hyphenation, openshot, openssh-server, openssh-sftp-server, pdfmod, pdftk, postgresql, powertop, python3-bcrypt, python3-psycopg2, python3-tornado, qalculate-gtk, qgis, rambox, scrot, shotwell, skypeforlinux, solaar, texlive-full, texstudio, vim-gnome, voikko-fi, xournal, zsh
 Recommends:
 Suggests:
 Description: metapackage pulling in maven, java, texstudio, etc work tools.
  This package is meant to shorten the list of manually installed packages on Ubuntu/Mint systems, and to help replicate a configuration on a new machine.
- Pulls in work tools for programming and academic publishing, as well as drawing, design tools. Note: intel-microcode removed for now, investigating hibernate issue according to https://ubuntuforums.org/showthread.php?t=2321399&page=3
+ Pulls in work tools for programming and academic publishing, as well as drawing, design tools. Note: intel-microcode removed for now, investigating hibernate issue according to https://ubuntuforums.org/showthread.php?t=2321399&page=3A
+ Removed thrift-compiler, since we now need Thrift 0.11.0 and there is no current package for it.
