@@ -23,18 +23,8 @@ dconf-editor
 lagerspetz-meta-desktop
 lagerspetz-meta-games
 lagerspetz-meta-tools
-mono-complete
 netext73
-python3-matplotlib
 python3-pip
-python3-scipy
-python3-seaborn
 python3-tables
-python3-tables-lib
-sbt
-signon-keyring-extension
-signon-plugin-oauth2
-signon-plugin-password
-wayland-protocols
 ```
 Build these metapackages using `dpkg --build name-of-directory` in the metapackage folder.
