@@ -1,0 +1,10 @@
+Package: xserver-xorg-legacy
+Maintainer: Eemil Lagerspetz <eemil@gmx.com>
+Architecture: all
+Version: 2:1.20
+Multi-Arch: foreign
+Depends:
+Recommends:
+Suggests:
+Description: Fake package to fix bumblebee.
+ This package contains no files. Its only purpose is to make the nvidia driver package think that the legacy xserver is installed, but without providing it, because it breaks current versions of bumblebee.
