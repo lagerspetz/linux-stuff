@@ -1,0 +1,14 @@
+Package: texlive-full-nodoc
+Version: 1.1.0
+Section: tex
+Priority: optional
+Architecture: all
+Multi-Arch: foreign
+Depends: asymptote, biber, chktex, cm-super (>= 0.3.3-3), context, dvidvi, dvipng, feynmf, fragmaster, info (>= 4.8), lacheck, latex-cjk-all (>= 4.6.0+cvs20060714-2), latexdiff, latexmk, lcdf-typetools, lmodern (>= 0.93.3), prerex (>> 6.5.3-1), psutils, purifyeps, t1utils, tex-gyre, texinfo (>= 4.8), texlive-base (>= 2017.20170628), texlive-bibtex-extra (>= 2017.20170628), texlive-binaries (>= 2017.20170524.44437), texlive-extra-utils (>= 2017.20170628), texlive-font-utils (>= 2017.20170628), texlive-fonts-extra (>= 2017.20170628), texlive-fonts-extra-links (>= 2017.20170628), texlive-fonts-recommended (>= 2017.20170628), texlive-formats-extra (>= 2017.20170628), texlive-games (>= 2017.20170628), texlive-humanities (>= 2017.20170628), texlive-lang-arabic (>= 2017.20170628), texlive-lang-chinese (>= 2017.20170628), texlive-lang-cjk (>= 2017.20170628), texlive-lang-cyrillic (>= 2017.20170628), texlive-lang-czechslovak (>= 2017.20170628), texlive-lang-english (>= 2017.20170628), texlive-lang-european (>= 2017.20170628), texlive-lang-french (>= 2017.20170628), texlive-lang-german (>= 2017.20170628), texlive-lang-greek (>= 2017.20170628), texlive-lang-italian (>= 2017.20170628), texlive-lang-japanese (>= 2017.20170628), texlive-lang-korean (>= 2017.20170628), texlive-lang-other (>= 2017.20170628), texlive-lang-polish (>= 2017.20170628), texlive-lang-portuguese (>= 2017.20170628), texlive-lang-spanish (>= 2017.20170628), texlive-latex-base (>= 2017.20170628), texlive-latex-extra (>= 2017.20170628), texlive-latex-recommended (>= 2017.20170628), texlive-luatex (>= 2017.20170628), texlive-metapost (>= 2017.20170628), texlive-music (>= 2017.20170628), texlive-pictures (>= 2017.20170628), texlive-plain-generic (>= 2017.20170628), texlive-pstricks (>= 2017.20170628), texlive-publishers (>= 2017.20170628), texlive-science (>= 2017.20170628), texlive-xetex (>= 2017.20170628), tipa (>= 2:1.2-2.1), vprerex (>> 6.5.3-1)
+Suggests:
+Conflicts:
+Installed-Size: 124 kb
+Maintainer: Eemil Lagerspetz <eemil@gmx.com>
+Description: Texlive-full without -doc deps.
+        This metapackage depends on the the packages that
+        texlive-full depends on, but without the -doc dependencies.
