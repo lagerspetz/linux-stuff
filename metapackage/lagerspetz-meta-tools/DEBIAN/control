@@ -1,9 +1,9 @@
 Package: lagerspetz-meta-tools
 Maintainer: Eemil Lagerspetz <eemil@gmx.com>
 Architecture: all
-Version: 1.0.3
+Version: 1.0.4
 Multi-Arch: foreign
-Depends: darktable, dos2unix, gedit-plugin-text-size, gimp, gitg, gnuplot-x11, google-talkplugin, heimdall-flash, html2text, hugin, inkscape, intel-gpu-tools, jabref, jdupes, libpng-tools, libreoffice-voikko, maven, meld, mosh, nautilus-megasync, nginx, openoffice.org-hyphenation, openshot, openssh-server, openssh-sftp-server, pdfmod, postgresql, powertop, python3-bcrypt, python3-psycopg2, python3-tornado, qalculate-gtk, qgis, rambox, scrot, shotwell, skypeforlinux, solaar, texlive-full, texstudio, vim-gnome, voikko-fi, xournal, zsh, sbt, mono-complete, python3-seaborn
+Depends: darktable, dos2unix, gedit-plugin-text-size, gimp, gitg, gnuplot-x11, google-talkplugin, heimdall-flash, html2text, hugin, inkscape, intel-gpu-tools, jabref, jdupes, libpng-tools, libreoffice-voikko, maven, meld, mosh, nautilus-megasync, nginx, openoffice.org-hyphenation, openshot, openssh-server, openssh-sftp-server, pdfmod, postgresql, powertop, python3-bcrypt, python3-psycopg2, python3-tornado, qalculate-gtk, qgis, rambox, scrot, shotwell, skypeforlinux, solaar, texlive-full-nodoc, texstudio, vim-gnome, voikko-fi, xournal, zsh, sbt, mono-complete, python3-seaborn
 Recommends:dbeaver-ce
 Suggests:pdftk
 Description: metapackage pulling in maven, java, texstudio, etc work tools.
