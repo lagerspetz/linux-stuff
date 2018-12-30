@@ -1,12 +1,13 @@
 Package: lagerspetz-meta-desktop
 Maintainer: Eemil Lagerspetz <eemil@gmx.com>
 Architecture: all
-Version: 1.0.2
+Version: 1.0.3
 Multi-Arch: foreign
-Depends: add-apt-key, app-install-data-partner, arc-theme, audacity, cmake, devscripts, docky, dvdauthor, evolution-data-server-online-accounts, fonts-arphic-ukai, fonts-mathjax, gconf-editor, gdebi, gnome, gnome-icon-theme-symbolic, gnome-system-tools, gnome-tweak-tool, gparted, grub-efi-amd64-signed, gtk2-engines, gtk2-engines:i386, gtk2-engines-murrine:i386, gtk2-engines-oxygen:i386, gtk2-engines-pixbuf:i386, gucharmap, gufw, hardinfo, hfsprogs, hyphen-en-us, ibus-libpinyin, ibus-pinyin, ifuse, inxi, keepass2, lame, libimobiledevice-utils, librsvg2-bin, linux-generic, linux-signed-generic, mencoder, mpv, ndiswrapper-dkms, network-manager-openvpn-gnome, ntpdate, pm-utils, ppa-purge, syslinux-utils, ubuntu-minimal, ubuntu-restricted-addons, ubuntu-standard, vdpau-va-driver, xprintidle, smbclient
+Depends: add-apt-key, app-install-data-partner, arc-theme, audacity, cmake, devscripts, dvdauthor, evolution-data-server-online-accounts, fonts-arphic-ukai, fonts-mathjax, gconf-editor, gdebi, gnome, gnome-icon-theme-symbolic, gnome-system-tools, gnome-tweak-tool, gparted, grub-efi-amd64-signed, gtk2-engines, gtk2-engines:i386, gtk2-engines-murrine:i386, gtk2-engines-oxygen:i386, gtk2-engines-pixbuf:i386, gucharmap, gufw, hardinfo, hfsprogs, hyphen-en-us, ibus-libpinyin, ibus-pinyin, ifuse, inxi, keepass2, lame, libimobiledevice-utils, librsvg2-bin, linux-generic, linux-signed-generic, mencoder, mpv, ndiswrapper-dkms, network-manager-openvpn-gnome, ntpdate, pm-utils, ppa-purge, syslinux-utils, ubuntu-minimal, ubuntu-restricted-addons, ubuntu-standard, vdpau-va-driver, xprintidle, smbclient
 Recommends: nautilus-megasync, indicator-application, indicator-messages, epson-inkjet-printer-201301w, epson-inkjet-printer-escpr, epson-printer-utility
 Suggests: ubuntu-gnome-wallpapers, ubuntu-gnome-desktop
 Description: metapackage pulling in dependencies required for a functional GNOME desktop.
  This package is meant to shorten the list of manually installed packages on Ubuntu/Mint systems, and to help replicate a configuration on a new machine.
- Pulls in gnome, docky, Chinese input system, fonts and themes I prefer, aptitude, etc useful tools and applications. NOTE: tlp and tlp-rdw removed because netext73 recommended to do so for APM to work properly.
+ Pulls in gnome, Chinese input system, fonts and themes I prefer, aptitude, etc useful tools and applications. NOTE: tlp and tlp-rdw removed because netext73 recommended to do so for APM to work properly.
  Added smbclient since it is required for samba based printers.
+ Removed docky, since the current dash to dock extension has surpassed its functionality completely.
