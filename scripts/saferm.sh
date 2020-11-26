@@ -33,7 +33,7 @@ trash_desktops="$HOME/.local/share/Trash/files"
 trash_fallback="$HOME/Trash"
 
 # use .local/share/Trash?
-use_desktop=$( ps -U $USER | grep -E "gnome-settings|startkde|mate-session|mate-settings|mate-panel|gnome-shell|lxsession|unity" )
+use_desktop=$( ps -U $USER | grep -E "gnome-settings|startkde|mate-session|mate-settings|mate-panel|gnome-shell|lxsession|unity|xfwm4" )
 
 # mounted filesystems, for avoiding cross-device move on safe delete
 filesystems=$( mount | awk '{print $3; }' )
