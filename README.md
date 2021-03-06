@@ -5,7 +5,7 @@ No guarantee that they work or warranty of
 any kind is given. Some highlights:
 
 ## Saferm.sh
-* `scripts/saferm.sh`: alias this to "rm". Moves files to your desktop environment's trash folder instead of permanently deleting files when you type "rm". To use with sudo, bash users can add an additional `alias sudo='sudo '` which will cause anything that follows sudo ot be also checked for aliases, including `rm`.
+* `scripts/saferm.sh`: alias this to "rm". Moves files to your desktop environment's trash folder instead of permanently deleting files when you type "rm". To use with sudo, bash users can add an additional `alias sudo='sudo '` which will cause anything that follows sudo to be also checked for aliases, including `rm`.
 
 * `scripts/manually-installed.sh`: Shows the list of manually installed (deb) packages on the system. Useful for keeping track of what is installed.
 
