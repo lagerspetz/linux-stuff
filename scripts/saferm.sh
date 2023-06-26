@@ -6,10 +6,10 @@
 ## Login   <vermind@drache>
 ## 
 ## Started on  Mon Aug 11 22:00:58 2008 Eemil Lagerspetz
-## Last update Sat Aug 16 23:49:18 2008 Eemil Lagerspetz
+## Last update Mon Jun 26  15:25:18 2023 Eemil Lagerspetz
 ##
 
-version="1.16";
+version="1.17";
 
 ## flags (change these to change default behaviour)
 recursive="" # do not recurse into directories by default
@@ -33,7 +33,7 @@ trash_desktops="$HOME/.local/share/Trash/files"
 trash_fallback="$HOME/Trash"
 
 # use .local/share/Trash?
-use_desktop=$( ps -U $USER | grep -E "gnome-settings|startkde|mate-session|mate-settings|mate-panel|gnome-shell|lxsession|unity|xfwm4" )
+use_desktop=$( ps -U $USER | grep -E "gnome-settings|startkde|mate-session|mate-settings|mate-panel|gnome-shell|lxsession|unity|xfwm4|plasma" )
 
 # mounted filesystems, for avoiding cross-device move on safe delete
 filesystems=$( mount | awk '{print $3; }' )
