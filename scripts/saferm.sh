@@ -127,13 +127,22 @@ askfs() {
   detect "$1"
   if [ "${fs}" != "${tfs}" ]; then
     unset answer;
-    until [ "$answer" == "y" -o "$answer" == "n" ]; do
+    while true; do
       echo -e "$blue$1$norm is on $blue${fs}$norm. Unsafe delete (y/n)?"
-      read -n 1 answer;
+      read -n 1 answer
+      case $answer in
+ 	[Yy]*)
+	  unsafe="yes"
+	  break
+	  ;;
+	[Nn]*)
+	  return
+	  ;;
+	*)
+	  echo "Please answer yes or no."
+	  ;;
+      esac
     done
-    if [ "$answer" == "y" ]; then
-      unsafe="yes"
-    fi
   fi
 }
 
@@ -159,21 +168,26 @@ complain() {
 
 asknobackup() {
   unset answer
-	until [ "$answer" == "y" -o "$answer" == "n" ]; do
-	  echo -e "$blue$k$norm could not be moved to trash. Unsafe delete (y/n)?"
-	  read -n 1 answer
-	done
-	if [ "$answer" == "y" ]
-	then
-	  unsafe="yes"
-	  performdelete "${k}"
-	  ret=$?
-		# Reset temporary unsafe flag
-	  unset unsafe
-	  unset answer
-	else
-	  unset answer
-	fi
+  while true; do
+    echo -e "$blue$k$norm could not be moved to trash. Unsafe delete (y/n)?"
+    read -n 1 answer
+    case $answer in
+      [Yy]*)
+	unsafe="yes"
+	performdelete "${k}"
+	ret=$?
+	break
+	;;
+      [Nn]*)
+	break
+	;;
+      *)
+        echo "Please answer yes or no."
+	;;
+    esac
+  done
+  # Reset temporary unsafe flag
+  unset unsafe
 }
 
 deletefiles() {
